@@ -8,7 +8,7 @@ export default async function ImportPage({ searchParams }: { searchParams: Promi
   const sp = await searchParams;
   const ctx = await requireOrg();
   const supabase = await createClient();
-  const { data: docs } = await supabase.from("documents").select("number,amount_total,issue_date").eq("org_id", ctx.orgId).eq("doc_type", "invoice").eq("status", "issued").order("issue_date", { ascending: false }).limit(2);
+  const { data: docs } = await supabase.from("documents").select("number,amount_total,issue_date").eq("org_id", ctx.orgId).eq("doc_type", "invoice").in("status", ["issued", "sent", "signed"]).order("issue_date", { ascending: false }).limit(2);
   const sample = (docs ?? []).map((d, i) => `2026-11-0${i + 3};${d.amount_total};Оплата по счёту ${d.number}`).join("\n");
   return (
     <>
