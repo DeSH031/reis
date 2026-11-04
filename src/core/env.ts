@@ -7,7 +7,7 @@ const publicSchema = z.object({
 const serverSchema = z.object({
   DEMO_EMAIL: z.string().email().optional(),
   DEMO_PASSWORD: z.string().min(6).optional(),
-  DEMO_ORG_ID: z.string().uuid().optional(),
+  DEMO_ORG_ID: z.string().min(1).optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   CRON_SECRET: z.string().optional(),
   TELEGRAM_BOT_TOKEN: z.string().optional(),
