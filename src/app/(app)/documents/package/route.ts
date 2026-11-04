@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(new Uint8Array(zipBuffer), {
       headers: {
         "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="package-${trip.number}.zip"`,
+        "Content-Disposition": `attachment; filename="package.zip"; filename*=UTF-8''${encodeURIComponent("package-" + trip.number)}.zip`,
         "Cache-Control": "private, no-cache, no-store, must-revalidate",
       },
     });
