@@ -17,6 +17,10 @@ describe("parseTripText", () => {
     expect(d).toEqual({ origin: null, dest: null, price: null, loadingDate: null, weightT: null, clientId: null });
   });
   it("does not take weight or km as price", () => {
-    expect(parseTripText("Шымкент Алматы 20 т", "2026-11-04").price).toBeNull();
+    const d = parseTripText("Шымкент Алматы 20 т", "2026-11-04"); expect(d.price).toBeNull(); expect(d.weightT).toBe(20);
   });
+});
+
+describe("parseTripText short forms", () => {
+  it("understands 340к", () => expect(parseTripText("Атырау Актобе 340к", "2026-11-04").price).toBe(340000));
 });

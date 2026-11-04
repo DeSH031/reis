@@ -27,7 +27,7 @@ export function parseTripText(text: string, todayKey: string, clients: { id: str
   found.sort((a, b) => a.pos - b.pos);
 
   let price: number | null = null;
-  const m = t.match(/(\d[\d\s]*[.,]?\d*)\s*(тыс|к\b|k\b|тг|₸|тенге)?/g) ?? [];
+  const m = t.match(/(\d[\d\s]*[.,]?\d*)\s*(тыс|к(?![а-я])|k\b|тг|₸|тенге)?/g) ?? [];
   for (const raw of m) {
     const mm = raw.match(/^(\d[\d\s]*[.,]?\d*)\s*(тыс|к|k|тг|₸|тенге)?$/);
     if (!mm) continue;
@@ -37,7 +37,7 @@ export function parseTripText(text: string, todayKey: string, clients: { id: str
     if (v >= 20_000 && v <= 50_000_000 && (price === null || v > price)) price = v;
   }
 
-  const w = t.match(/(\d+(?:[.,]\d+)?)\s*(?:т\b|тонн)/);
+  const w = t.match(/(\d+(?:[.,]\d+)?)\s*(?:т(?![а-я])|тонн)/);
   let loadingDate: string | null = null;
   if (/послезавтра/.test(t)) loadingDate = addDays(todayKey, 2);
   else if (/завтра/.test(t)) loadingDate = addDays(todayKey, 1);
