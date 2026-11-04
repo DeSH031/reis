@@ -9,6 +9,7 @@ const ITEMS = [
   { href: "/trips", label: "Рейсы" },
   { href: "/documents", label: "Документы" },
   { href: "/finance", label: "Финансы" },
+  { href: "/alerts", label: "Оповещения" },
   { href: "/directory/clients", label: "Справочники" },
   { href: "/settings", label: "Настройки" },
 ];
