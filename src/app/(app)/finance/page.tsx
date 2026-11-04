@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/core/supabase/server";
 import { canEditPayments, requireOrg } from "@/core/session";
 import { Button, Card, EmptyState, PageHeader, cx, inputCls } from "@/core/ui";
@@ -26,7 +27,7 @@ export default async function FinancePage() {
 
   return (
     <>
-      <PageHeader title="Финансы" subtitle="Дебиторка и платежи" />
+      <PageHeader title="Финансы" subtitle="Дебиторка и платежи" actions={<Link href="/finance/import" className="text-sm text-accent">Импорт выписки</Link>} />
       <div className="mb-6 grid gap-3 sm:grid-cols-3">
         <Card><div className="text-sm text-muted">Ждём оплаты</div><div className="mt-1 text-2xl font-semibold">{formatMoney(sum(open))}</div><div className="text-sm text-muted">{open.length} счетов</div></Card>
         <Card><div className="text-sm text-muted">Просрочено</div><div className="mt-1 text-2xl font-semibold text-negative">{formatMoney(sum(overdue))}</div><div className="text-sm text-muted">{overdue.length} счетов</div></Card>

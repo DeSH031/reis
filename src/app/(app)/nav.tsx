@@ -10,6 +10,7 @@ const ITEMS = [
   { href: "/documents", label: "Документы" },
   { href: "/finance", label: "Финансы" },
   { href: "/alerts", label: "Оповещения" },
+  { href: "/tour", label: "Режим показа" },
   { href: "/directory/clients", label: "Справочники" },
   { href: "/settings", label: "Настройки" },
 ];
