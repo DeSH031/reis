@@ -61,3 +61,15 @@ export async function addCost(tripId: string, formData: FormData) {
   await supabase.from("trip_events").insert({ org_id: ctx.orgId, trip_id: tripId, kind: "cost_added", payload: p, actor: ctx.email });
   revalidatePath(`/trips/${tripId}`);
 }
+
+export async function createDriverLink(tripId: string, _prev: string): Promise<string> { void _prev;
+  const ctx = await requireOrg();
+  if (!canEditTrips(ctx.role)) throw new Error("Недостаточно прав");
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("create_driver_link", { p_trip: id.parse(tripId) });
+  if (error || !data) throw new Error("Не удалось создать ссылку");
+  const { headers } = await import("next/headers");
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  return `https://${host}/d/${data}`;
+}

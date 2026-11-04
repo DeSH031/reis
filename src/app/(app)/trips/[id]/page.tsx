@@ -6,6 +6,7 @@ import { Button, Card, PageHeader, inputCls } from "@/core/ui";
 import { formatDate, formatMoney, formatPercent } from "@/core/format";
 import { COST_CATEGORIES, STATUSES, costLabel, profitFor, statusLabel, type CostRow, type TripRow } from "@/modules/trips/shared";
 import { addCost, setStatus } from "../actions";
+import { DriverLink } from "./driver-link";
 
 export default async function TripCard({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -48,6 +49,7 @@ export default async function TripCard({ params }: { params: Promise<{ id: strin
               <Button type="submit" variant="secondary">Сменить статус</Button>
             </form>
           )}
+          {edit && <DriverLink tripId={id} />}
         </Card>
         <Card>
           <h2 className="mb-3 font-medium">Прибыль</h2>
