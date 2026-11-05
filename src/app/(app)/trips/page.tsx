@@ -34,7 +34,7 @@ export default async function TripsPage({ searchParams }: { searchParams: Promis
       <PageHeader
         title="Рейсы"
         subtitle={`${rows.length} рейсов`}
-        actions={canEditTrips(ctx.role) ? <Link href="/trips/new" className="inline-flex min-h-11 items-center rounded-lg bg-accent px-4 text-sm font-medium text-accent-fg">Новый рейс</Link> : undefined}
+        actions={canEditTrips(ctx.role) ? <><Link href="/trips/import" className="mr-2 inline-flex min-h-11 items-center rounded-lg border border-border px-4 text-sm">Импорт из Excel</Link><Link href="/trips/new" className="inline-flex min-h-11 items-center rounded-lg bg-accent px-4 text-sm font-medium text-accent-fg">Новый рейс</Link></> : undefined}
       />
       <div className="mb-4 flex flex-wrap gap-2 text-sm">
         <Link href="/trips" className={cx("min-h-11 content-center rounded-lg border border-border px-3", view === "table" && "bg-accent-soft text-accent")}>Таблица</Link>

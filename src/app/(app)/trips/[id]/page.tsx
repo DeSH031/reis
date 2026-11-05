@@ -8,6 +8,8 @@ import { COST_CATEGORIES, STATUSES, costLabel, profitFor, statusLabel, type Cost
 import { addCost, setStatus } from "../actions";
 import { DriverLink } from "./driver-link";
 
+const EVENT_LABEL: Record<string, string> = { created: "Рейс создан", status: "Смена статуса", cost_added: "Добавлен расход", driver_status: "Статус от водителя", driver_cost: "Расход от водителя" };
+
 export default async function TripCard({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const ctx = await requireOrg();
@@ -84,7 +86,7 @@ export default async function TripCard({ params }: { params: Promise<{ id: strin
         </Card>
         <Card className="lg:col-span-2">
           <h2 className="mb-3 font-medium">История</h2>
-          <ul className="space-y-1 text-sm">{events?.map((e) => <li key={e.id} className="text-muted">{formatDate(e.created_at)} · {e.kind}{e.actor ? ` · ${e.actor}` : ""}</li>)}</ul>
+          <ul className="space-y-1 text-sm">{events?.map((e) => <li key={e.id} className="text-muted">{formatDate(e.created_at)} · {EVENT_LABEL[e.kind as string] ?? e.kind}{e.actor ? ` · ${e.actor}` : ""}</li>)}</ul>
         </Card>
       </div>
     </>
