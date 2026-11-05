@@ -21,7 +21,7 @@ interface TripOption {
 export default async function NewDocumentPage({
   searchParams,
 }: {
-  searchParams: Promise<{ kind?: string; clientId?: string }>;
+  searchParams: Promise<{ kind?: string; clientId?: string; err?: string }>;
 }) {
   const sp = await searchParams;
   const ctx = await requireOrg();
@@ -79,6 +79,7 @@ export default async function NewDocumentPage({
         title="Новый документ"
         subtitle="Формирование документа со сквозной нумерацией"
       />
+      {sp.err && <Card className="mb-6 text-sm text-red-700">Не удалось сформировать документ: {sp.err}</Card>}
 
       {/* Step 1: Document Type */}
       <Card className="mb-6">

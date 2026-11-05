@@ -15,7 +15,7 @@ const createSchema = z.object({
   client_id: idSchema,
 });
 
-export async function createDocument(formData: FormData) {
+async function createDocumentInner(formData: FormData) {
   const ctx = await requireOrg();
   if (!canEditDocs(ctx.role)) throw new Error("Недостаточно прав для создания документов");
 
@@ -183,6 +183,17 @@ export async function createDocument(formData: FormData) {
 
   revalidatePath("/documents");
   redirect("/documents");
+}
+
+export async function createDocument(formData: FormData) {
+  try {
+    await createDocumentInner(formData);
+  } catch (e) {
+    if (e && typeof e === "object" && "digest" in e && String((e as { digest: unknown }).digest).startsWith("NEXT_REDIRECT")) throw e;
+    const msg = e instanceof Error ? e.message : "Ошибка";
+    const back = new URLSearchParams({ kind: String(formData.get("kind") ?? ""), clientId: String(formData.get("client_id") ?? ""), err: msg.slice(0, 200) });
+    redirect(`/documents/new?${back.toString()}`);
+  }
 }
 
 export async function updateDocumentStatus(documentId: string, newStatus: DocStatus) {
