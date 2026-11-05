@@ -19,7 +19,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ o
         </Card>
       )}
       <Card>
-        <p className="mb-3 text-sm text-muted">Загрузите вашу таблицу (.xlsx или .csv). В первой строке — названия колонок: Дата, Клиент, Откуда, Куда, Ставка, Км, Расходы. Обязательны Откуда, Куда, Ставка. Рейсы с прошедшей датой станут «Доставлен», по ним сразу посчитается прибыль.</p>
+        <p className="mb-3 text-sm text-muted">Загрузите вашу таблицу (.xlsx или .csv). В первой строке — названия колонок: Дата, Клиент, Откуда, Куда, Ставка, Км, Расходы (или отдельно Топливо и Зарплата водителя). Обязательны Откуда, Куда, Ставка. Одна сумма «Расходы» делится на топливо и зарплату и помечается как оценка. Рейсы с прошедшей датой станут «Доставлен», по ним сразу посчитается прибыль.</p>
         <form action={importTrips} className="grid gap-3">
           <input type="file" name="file" accept=".xlsx,.csv" className={inputCls + " py-2"} aria-label="Файл Excel" />
           <div className="flex items-center gap-4">

@@ -14,6 +14,8 @@ const ALIASES: Record<string, string[]> = {
   price: ["ставка", "сумма", "цена", "стоимость", "price"],
   km: ["км", "расстояние", "пробег"],
   cost: ["расходы", "затраты", "себестоимость", "cost"],
+  fuel: ["топливо", "гсм"],
+  pay: ["зарплата водителя", "зарплата", "оплата водителя"],
 };
 
 function cellText(v: unknown): string {
@@ -86,8 +88,17 @@ export async function importTrips(formData: FormData) {
       status: delivered ? "delivered" : "request", delivered_at: delivered ? `${date}T12:00:00Z` : null,
     }).select("id").single();
     if (error || !data) { skipped++; continue; }
-    const cost = num(g("cost"));
-    if (cost > 0) await supabase.from("trip_costs").insert({ org_id: ctx.orgId, trip_id: data.id, category: "other", amount: cost, source: "actual" });
+    const fuel = num(g("fuel")), pay = num(g("pay")), total = num(g("cost"));
+    const rowsCosts: { category: string; amount: number; source: string }[] = [];
+    if (fuel > 0 || pay > 0) {
+      if (fuel > 0) rowsCosts.push({ category: "fuel", amount: fuel, source: "actual" });
+      if (pay > 0) rowsCosts.push({ category: "driver_pay", amount: pay, source: "actual" });
+    } else if (total > 0) {
+      // Одна сумма расходов: делим 60/40 на топливо и зарплату, помечаем как оценку
+      rowsCosts.push({ category: "fuel", amount: Math.round(total * 0.6), source: "estimated" });
+      rowsCosts.push({ category: "driver_pay", amount: total - Math.round(total * 0.6), source: "estimated" });
+    }
+    if (rowsCosts.length) await supabase.from("trip_costs").insert(rowsCosts.map((c) => ({ org_id: ctx.orgId, trip_id: data.id, ...c })));
     ok++;
   }
   redirect(`/trips/import?ok=${ok}&skip=${skipped}&nc=${noClient}`);
